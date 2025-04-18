@@ -1,25 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+// src/pages/UploadPosts.js
+import React, { useState } from 'react';
+import TweetForm from './components/TweetForm';
 
-function App() {
+const UploadPosts = () => {
+  const handleTweetSubmit = (content) => {
+    // Logic to submit tweet content (send to API, add to database, etc.)
+    console.log('Tweet Submitted:', content);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h2>Upload Your Tweets</h2>
+      <p>Enter your tweet content and click upload to add it to the queue for posting.</p>
+      <TweetForm onSubmit={handleTweetSubmit} />
     </div>
   );
-}
+};
 
-export default App;
+export default UploadPosts;
