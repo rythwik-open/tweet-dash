@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Posted Tweets</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#1a1a1a] text-white">
+
+  <!-- Navbar -->
+  <nav class="bg-black text-white px-6 py-4 flex justify-between items-center">
+    <div class="text-2xl font-bold text-[#c4ff00]">My Tweet Scheduler</div>
+    <ul class="flex gap-6 text-white">
+      <li><a href="post.html" class="hover:text-[#c4ff00]">Upload Posts</a></li>
+      <li><a href="upcoming.html" class="hover:text-[#c4ff00]">Upcoming Posts</a></li>
+      <li><a href="posted.html" class="hover:text-[#c4ff00]">Posted Tweets</a></li>
+    </ul>
+  </nav>
+
+  <main class="py-12 px-8 max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6 text-[#c4ff00]">Posted Tweets</h1>
+    <div id="posted-list" class="space-y-6"></div>
+    <button onclick="loadMore()" class="mt-8 bg-[#c4ff00] text-black px-4 py-2 rounded hover:bg-lime-300">Load More</button>
+  </main>
+
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  <script>
+    let currentPage = 0;
+
+    async function loadTweets() {
+      const res = await fetch(`YOUR_GET_POSTED_API?page=${currentPage}`);
+      const data = await res.json();
+      const list = document.getElementById("posted-list");
+
+      data.tweets.forEach(tweet => {
+        const div = document.createElement("div");
+        div.innerHTML = `<blockquote class="twitter-tweet"><a href="${tweet.url}"></a></blockquote>`;
+        list.appendChild(div);
+      });
+
+      twttr.widgets.load();
+    }
+
+    function loadMore() {
+      currentPage++;
+      loadTweets();
+    }
+
+    loadTweets(); // initial load
+  </script>
+
+</body>
+</html>

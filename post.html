@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Engagement Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background-color: #1b1b1b;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .neumorphic {
+      background: #1b1b1b;
+      border-radius: 20px;
+      box-shadow: -6px -6px 12px #232323, 6px 6px 12px #111111;
+    }
+    .neumorphic-inner {
+      background: #1b1b1b;
+      border-radius: 16px;
+      box-shadow: inset -4px -4px 8px #232323, inset 4px 4px 8px #111111;
+    }
+    .accent {
+      color: #c4ff00;
+    }
+    .accent-bg {
+      background-color: #c4ff00;
+      color: #1b1b1b;
+    }
+    .sidebar {
+      width: 80px;
+      background: #1b1b1b;
+      height: 100vh;
+      box-shadow: -6px -6px 12px #232323, 6px 6px 12px #111111;
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 0;
+      gap: 30px;
+    }
+
+    .sidebar-icon {
+      background: #1b1b1b;
+      border-radius: 50%;
+      box-shadow: -4px -4px 8px #232323, 4px 4px 8px #111111;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sidebar-icon i {
+      font-size: 20px;
+      color: #c4ff00;
+    }
+
+    .logo-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #1b1b1b;
+      box-shadow: -4px -4px 8px #232323, 4px 4px 8px #111111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-icon i {
+      font-size: 26px;
+      color: #c4ff00;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo-icon mb-6">
+      <i class="fas fa-leaf"></i>
+    </div>
+    <div class="sidebar-icon"><i class="fas fa-home"></i></div>
+    <div class="sidebar-icon"><i class="fas fa-chart-line"></i></div>
+    <div class="sidebar-icon"><i class="fas fa-cog"></i></div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="ml-[100px] px-6 py-6">
+    <h1 class="text-2xl font-semibold accent mb-6">Dashboard Overview</h1>
+
+    <!-- Metrics Grid -->
+    <div class="grid grid-cols-4 gap-6 mb-8">
+      <div class="neumorphic p-4 text-center">
+        <p class="text-lg">Total Tweets</p>
+        <h2 class="text-2xl font-bold accent">135</h2>
+      </div>
+      <div class="neumorphic p-4 text-center">
+        <p class="text-lg">Likes Received</p>
+        <h2 class="text-2xl font-bold accent">980</h2>
+      </div>
+      <div class="neumorphic p-4 text-center">
+        <p class="text-lg">Retweets</p>
+        <h2 class="text-2xl font-bold accent">287</h2>
+      </div>
+      <div class="neumorphic p-4 text-center">
+        <p class="text-lg">Engagement Rate</p>
+        <h2 class="text-2xl font-bold accent">4.8%</h2>
+      </div>
+    </div>
+
+    <!-- More Stats -->
+    <div class="grid grid-cols-4 gap-6 mb-8">
+      <div class="neumorphic p-4 text-center">
+        <p class="text-lg">Followers Gained</p>
+        <h2 class="text-2xl font-bold accent">+180</h2>
+      </div>
+      <div class="neumorphic p-4 text-center">
+        <p class="text-lg">Replies</p>
+        <h2 class="text-2xl font-bold accent">130</h2>
+      </div>
+      <div class="neumorphic p-4 text-center">
+        <p class="text-lg">Mentions</p>
+        <h2 class="text-2xl font-bold accent">95</h2>
+      </div>
+      <div class="neumorphic p-4 text-center">
+        <p class="text-lg">Profile Visits</p>
+        <h2 class="text-2xl font-bold accent">1.2K</h2>
+      </div>
+    </div>
+
+    <!-- Chart + Post Performance -->
+    <div class="grid grid-cols-2 gap-6 mb-8">
+      <div class="neumorphic p-6">
+        <h2 class="text-xl font-semibold mb-4 accent">Recent Post Performance</h2>
+        <ul class="space-y-3">
+          <li class="flex justify-between text-sm">
+            <span>“Launching update 🚀”</span><span class="accent">+340 Likes</span>
+          </li>
+          <li class="flex justify-between text-sm">
+            <span>“Sneak peek 👀”</span><span class="accent">+120 Retweets</span>
+          </li>
+          <li class="flex justify-between text-sm">
+            <span>“Feature breakdown”</span><span class="accent">+210 Likes</span>
+          </li>
+        </ul>
+      </div>
+      <div class="neumorphic p-6">
+        <h2 class="text-xl font-semibold mb-4 accent">Engagement Chart</h2>
+        <canvas id="engagementChart" class="w-full h-40"></canvas>
+      </div>
+    </div>
+
+    <!-- More Insight Cards -->
+    <div class="grid grid-cols-3 gap-6">
+      <div class="neumorphic p-6">
+        <h3 class="text-lg font-medium mb-2 accent">Avg Likes per Tweet</h3>
+        <p class="text-xl font-bold">72</p>
+      </div>
+      <div class="neumorphic p-6">
+        <h3 class="text-lg font-medium mb-2 accent">Top Performing Time</h3>
+        <p class="text-xl font-bold">3:00 PM</p>
+      </div>
+      <div class="neumorphic p-6">
+        <h3 class="text-lg font-medium mb-2 accent">Impressions This Week</h3>
+        <p class="text-xl font-bold">8.6K</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart Script -->
+  <script>
+    const ctx = document.getElementById('engagementChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        datasets: [{
+          label: 'Likes',
+          data: [120, 190, 300, 250, 220, 310, 400],
+          backgroundColor: '#c4ff0022',
+          borderColor: '#c4ff00',
+          borderWidth: 2,
+          tension: 0.3,
+          fill: true,
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: { color: '#888' },
+            grid: { color: '#2b2b2b' }
+          },
+          x: {
+            ticks: { color: '#888' },
+            grid: { color: '#2b2b2b' }
+          }
+        },
+        plugins: {
+          legend: { labels: { color: '#c4ff00' } }
+        }
+      }
+    });
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+</body>
+</html>

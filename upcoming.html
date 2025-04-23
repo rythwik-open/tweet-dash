@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upcoming Tweets</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#1a1a1a] text-white">
+
+  <!-- Navbar -->
+  <nav class="bg-black text-white px-6 py-4 flex justify-between items-center">
+    <div class="text-2xl font-bold text-[#c4ff00]">My Tweet Scheduler</div>
+    <ul class="flex gap-6 text-white">
+      <li><a href="post.html" class="hover:text-[#c4ff00]">Upload Posts</a></li>
+      <li><a href="upcoming.html" class="hover:text-[#c4ff00]">Upcoming Posts</a></li>
+      <li><a href="posted.html" class="hover:text-[#c4ff00]">Posted Tweets</a></li>
+    </ul>
+  </nav>
+
+  <main class="py-12 px-8 max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6 text-[#c4ff00]">Upcoming Tweets</h1>
+    <button onclick="fetchUpcomingTweets()" class="mb-6 bg-[#c4ff00] text-black px-4 py-2 rounded hover:bg-lime-300">Refresh</button>
+    <div id="tweet-list" class="space-y-4"></div>
+  </main>
+
+  <script>
+    async function fetchUpcomingTweets() {
+      const res = await fetch('YOUR_API_ENDPOINT_HERE');
+      const data = await res.json();
+      const list = document.getElementById("tweet-list");
+      list.innerHTML = "";
+
+      data.tweets.forEach((tweet, index) => {
+        const div = document.createElement("div");
+        div.className = "p-4 border border-[#c4ff00] rounded bg-black";
+        div.innerHTML = `
+          <p>${tweet.content}</p>
+          <button onclick="postTweet('${tweet.id}')" class="mt-2 bg-[#c4ff00] text-black px-3 py-1 rounded hover:bg-lime-300">Post Now</button>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    async function postTweet(tweetId) {
+      const res = await fetch('YOUR_POST_NOW_API_ENDPOINT', {
+        method: 'POST',
+        body: JSON.stringify({ id: tweetId }),
+        headers: { 'Content-Type': 'application/json' }
+      });
+      await fetchUpcomingTweets(); // refresh after posting
+    }
+
+    // Load on first visit
+    fetchUpcomingTweets();
+  </script>
+
+</body>
+</html>
